@@ -8,7 +8,7 @@ sealed class Term {
         get() = lectures.fold(0f) { acc, lecture -> acc + lecture.credits }
 
     val totalGradePoints
-        get() = lectures.fold(0f) { acc, lecture -> acc + lecture.grade.points }
+        get() = lectures.fold(0f) { acc, lecture -> acc + lecture.grade!!.points }
 
     val averageGrade
         get() = totalGradePoints / totalCredits
