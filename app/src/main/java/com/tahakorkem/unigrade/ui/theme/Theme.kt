@@ -5,6 +5,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
     primary = Purple200,
@@ -15,7 +18,8 @@ private val DarkColorPalette = darkColors(
 private val LightColorPalette = lightColors(
     primary = Orange,
     primaryVariant = Orange_,
-    secondary = Yellow
+    secondary = Yellow,
+    onPrimary = Color.White,
 
     /* Other default colors to override
     background = Color.White,
@@ -33,6 +37,17 @@ fun UniGradeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composab
         DarkColorPalette
     } else {
         LightColorPalette
+    }
+
+    val systemUiController = rememberSystemUiController()
+    val darkIcons = MaterialTheme.colors.isLight
+
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = colors.primaryVariant,
+            darkIcons = darkIcons
+        )
+        // setStatusBarsColor() and setNavigationBarColor() also exist
     }
 
     MaterialTheme(

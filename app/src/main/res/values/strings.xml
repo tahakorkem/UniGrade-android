@@ -12,4 +12,8 @@
     <string name="localized_text_f0">Devamsız</string>
     <string name="credits">Kredi</string>
     <string name="pending">Beklemede</string>
+    <string name="semester_fall">%s Güz Dönemi</string>
+    <string name="semester_spring">%s Bahar Dönemi</string>
+    <string name="semester_summer">%s Yaz Dönemi</string>
+    <string name="app_bar_lecture_detail">Ders Detayı</string>
 </resources>
