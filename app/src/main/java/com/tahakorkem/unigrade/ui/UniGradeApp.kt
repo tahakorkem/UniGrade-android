@@ -1,15 +1,14 @@
 package com.tahakorkem.unigrade.ui
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.tahakorkem.unigrade.ui.screen.lecturedetails.LectureDetailScreen
-import com.tahakorkem.unigrade.ui.screen.lecturelist.LectureListScreen
+import com.tahakorkem.unigrade.ui.screen.lecture.addoredit.AddOrEditLectureScreen
+import com.tahakorkem.unigrade.ui.screen.lecture.detail.LectureDetailScreen
+import com.tahakorkem.unigrade.ui.screen.lecture.list.LectureListScreen
 import com.tahakorkem.unigrade.ui.theme.UniGradeTheme
+import com.tahakorkem.unigrade.ui.NavDestinations.Lecture as LectureDest
 
 @Composable
 fun UniGradeApp() {
@@ -17,21 +16,56 @@ fun UniGradeApp() {
         val navController = rememberNavController()
         NavHost(
             navController = navController,
-            startDestination = NavDestinations.LECTURE_LIST_ROUTE
+            startDestination = LectureDest.List.ROUTE
         ) {
-            composable(route = NavDestinations.LECTURE_LIST_ROUTE) {
-                LectureListScreen(navController = navController)
+            composable(route = LectureDest.List.ROUTE) {
+                LectureListScreen(
+                    navigateToDetail = { lecture ->
+                        navController.navigate(LectureDest.Detail.routeWithArgs(lecture.code))
+                    },
+                    navigateToAdd = {
+                        navController.navigate(LectureDest.Add.ROUTE)
+                    }
+                )
             }
             composable(
-                route = "${NavDestinations.LECTURE_DETAIL_ROUTE}/{${NavDestinations.LECTURE_DETAIL_CODE_KEY}}",
-                arguments = listOf(
-                    navArgument(NavDestinations.LECTURE_DETAIL_CODE_KEY) { type = NavType.StringType }
-                )
+                route = LectureDest.Detail.ROUTE,
+                arguments = LectureDest.Detail.ARGUMENTS
             ) { backStackEntry ->
-                val courseCode = backStackEntry.arguments?.getString(NavDestinations.LECTURE_DETAIL_CODE_KEY)
+                val courseCode = backStackEntry.arguments
+                    ?.getString(LectureDest.Detail.KEY_CODE)
                     ?: error("No lecture code")
                 LectureDetailScreen(
                     courseCode = courseCode,
+                    navigateToEdit = { lecture ->
+                        navController.navigate(LectureDest.Edit.routeWithArgs(lecture.code))
+                    },
+                    navigateUp = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+            composable(
+                route = LectureDest.Edit.ROUTE,
+                arguments = LectureDest.Edit.ARGUMENTS
+            ) { backStackEntry ->
+                val courseCode = backStackEntry.arguments
+                    ?.getString(LectureDest.Edit.KEY_CODE)
+                    ?: error("No lecture code")
+                AddOrEditLectureScreen(
+                    courseCode = courseCode,
+                    navigateUp = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+            composable(
+                route = LectureDest.Add.ROUTE
+            ) {
+                AddOrEditLectureScreen(
+                    navigateUp = {
+                        navController.navigateUp()
+                    }
                 )
             }
         }

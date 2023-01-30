@@ -1,6 +1,5 @@
 package com.tahakorkem.unigrade.data.source.impl
 
-import android.util.Log
 import com.tahakorkem.unigrade.FakeItems
 import com.tahakorkem.unigrade.data.Lecture
 import com.tahakorkem.unigrade.data.Result
@@ -15,9 +14,8 @@ class FakeLectureRepository : LectureRepository {
     private var total = MutableStateFlow(Total(terms = FakeItems.terms))
 
     override fun observeAll(): Flow<Total> {
-        return total.map {
+        return total.onEach {
             delay(500)
-            it
         }
     }
 
@@ -25,7 +23,7 @@ class FakeLectureRepository : LectureRepository {
         return total.map {
             it.terms.flatMap { it.lectures }.find { it.code == lectureCode }
                 ?: error("Lecture not found")
-        }
+        }.onEach { delay(200) }
     }
 
     override suspend fun insertLecture(lecture: Lecture, whichTerm: Term): Result<Unit> {

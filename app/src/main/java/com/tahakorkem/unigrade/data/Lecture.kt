@@ -1,9 +1,9 @@
 package com.tahakorkem.unigrade.data
 
 data class Lecture(
-    val name: String,
-    val code: String,
-    val grade: Grade?,
-    val credits: Float,
-    val gradingScheme: GradingScheme
+    val name: String = "",
+    val code: String = "",
+    val grade: Grade? = null,
+    val credits: Float = 0f,
+    val gradingScheme: GradingScheme = emptyList(),
 )

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterialApi::class)
 
-package com.tahakorkem.unigrade.ui.screen.lecturelist
+package com.tahakorkem.unigrade.ui.screen.lecture.list
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -29,20 +29,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.tahakorkem.unigrade.FakeItems
 import com.tahakorkem.unigrade.R
 import com.tahakorkem.unigrade.data.Grade
 import com.tahakorkem.unigrade.data.Lecture
 import com.tahakorkem.unigrade.data.Term
-import com.tahakorkem.unigrade.ui.NavDestinations
 import com.tahakorkem.unigrade.ui.theme.UniGradeTheme
 import com.tahakorkem.unigrade.util.toPrettyString
 
 @Composable
 fun LectureListScreen(
-    navController: NavHostController,
+    navigateToDetail: (Lecture) -> Unit,
+    navigateToAdd: () -> Unit,
     viewModel: LectureListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -84,18 +82,7 @@ fun LectureListScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {
-                    viewModel.insert(
-                        lecture = Lecture(
-                            name = "Yeni Ders",
-                            code = "BLM123",
-                            grade = null,
-                            credits = 5.0f,
-                            gradingScheme = listOf()
-                        ),
-                        term = Term.FallTerm(year = Term.Year(beginning = 2020)),
-                    )
-                },
+                onClick = navigateToAdd,
                 shape = fabShape,
             ) {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = null)
@@ -104,15 +91,11 @@ fun LectureListScreen(
         isFloatingActionButtonDocked = true,
         floatingActionButtonPosition = FabPosition.Center,
     ) {
-        if (uiState.loading) {
-            Loading()
-        } else {
-            LectureList(
+        when {
+            uiState.loading -> Loading()
+            else -> LectureList(
                 terms = uiState.total!!.terms,
-                onLectureClick = { lecture ->
-                    navController.navigate("${NavDestinations.LECTURE_DETAIL_ROUTE}/${lecture.code}") {
-                    }
-                },
+                onLectureClick = navigateToDetail,
             )
         }
     }
@@ -278,6 +261,7 @@ private fun LectureList(
                 item {
                     Row(
                         modifier = Modifier
+                            .padding(horizontal = 6.dp)
                             .fillMaxWidth()
                             .padding(
                                 start = 28.5.dp + 16.dp,

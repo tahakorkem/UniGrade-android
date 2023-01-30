@@ -36,21 +36,21 @@ object FakeItems {
             lectures = listOf(
                 Lecture(
                     name = "Türkçe 1",
-                    code = "BLM1011",
+                    code = "BLM1111",
                     grade = Grade.AA,
                     credits = 0f,
                     gradingScheme = listOf()
                 ),
                 Lecture(
                     name = "Veritabanı Yönetimi",
-                    code = "BLM1072",
+                    code = "BLM1172",
                     grade = Grade.BA,
                     credits = 4.0f,
                     gradingScheme = listOf()
                 ),
                 Lecture(
                     name = "Doğal Dil İşlemeye Giriş",
-                    code = "BLM1022",
+                    code = "BLM1122",
                     grade = Grade.DC,
                     credits = 3.0f,
                     gradingScheme = listOf()

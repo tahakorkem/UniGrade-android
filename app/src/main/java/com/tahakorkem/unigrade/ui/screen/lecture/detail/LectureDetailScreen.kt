@@ -1,12 +1,12 @@
-package com.tahakorkem.unigrade.ui.screen.lecturedetails
+package com.tahakorkem.unigrade.ui.screen.lecture.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,31 +19,41 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tahakorkem.unigrade.R
 import com.tahakorkem.unigrade.data.Lecture
-import com.tahakorkem.unigrade.ui.screen.lecturelist.Loading
+import com.tahakorkem.unigrade.ui.screen.lecture.list.Loading
 import com.tahakorkem.unigrade.util.toPrettyString
 
 @Composable
 fun LectureDetailScreen(
     courseCode: String,
+    navigateToEdit: (Lecture) -> Unit,
+    navigateUp: () -> Unit,
     viewModel: LectureDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = stringResource(id = R.string.app_bar_lecture_detail)) })
+            TopAppBar(
+                title = { Text(text = stringResource(id = R.string.app_bar_lecture_detail)) },
+                navigationIcon = {
+                    IconButton(onClick = navigateUp) {
+                        Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
+                    }
+                },
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { }
+                onClick = {
+                    uiState.lecture?.let { navigateToEdit(it) }
+                },
             ) {
                 Icon(imageVector = Icons.Filled.Edit, contentDescription = null)
             }
         },
     ) {
-        if (uiState.isLoading) {
-            Loading()
-        } else {
-            LectureDetailContent(uiState.lecture!!)
+        when {
+            uiState.isLoading -> Loading()
+            else -> LectureDetailContent(uiState.lecture!!)
         }
     }
 }

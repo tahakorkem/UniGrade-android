@@ -16,4 +16,6 @@
     <string name="semester_spring">%s Bahar Dönemi</string>
     <string name="semester_summer">%s Yaz Dönemi</string>
     <string name="app_bar_lecture_detail">Ders Detayı</string>
+    <string name="app_bar_edit_lecture">Dersi Düzenle</string>
+    <string name="app_bar_new_lecture">Yeni Ders</string>
 </resources>

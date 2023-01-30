@@ -1,4 +1,4 @@
-package com.tahakorkem.unigrade.ui.screen.lecturedetails
+package com.tahakorkem.unigrade.ui.screen.lecture.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.tahakorkem.unigrade.data.Lecture
 import com.tahakorkem.unigrade.data.source.LectureRepository
 import com.tahakorkem.unigrade.ui.NavDestinations
-import com.tahakorkem.unigrade.ui.screen.lecturelist.LectureListViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -19,8 +18,7 @@ class LectureDetailViewModel
     private val lectureRepository: LectureRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val lectureCode =
-        savedStateHandle.get<String>(NavDestinations.LECTURE_DETAIL_CODE_KEY)!!
+    private val lectureCode = savedStateHandle.get<String>(NavDestinations.Lecture.Detail.KEY_CODE)!!
     val uiState = lectureRepository
         .observeLecture(lectureCode)
         .map { LectureDetailUiState(lecture = it, isLoading = false) }

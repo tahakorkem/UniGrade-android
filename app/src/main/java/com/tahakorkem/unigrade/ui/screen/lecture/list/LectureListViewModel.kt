@@ -1,4 +1,4 @@
-package com.tahakorkem.unigrade.ui.screen.lecturelist
+package com.tahakorkem.unigrade.ui.screen.lecture.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,9 +21,9 @@ class LectureListViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, LectureListUiState(loading = true))
 
 
-    fun insert(lecture: Lecture, term: Term) = viewModelScope.launch {
-        lectureRepository.insertLecture(lecture, term)
-    }
+//    fun insert(lecture: Lecture, term: Term) = viewModelScope.launch {
+//        lectureRepository.insertLecture(lecture, term)
+//    }
 
 
     data class LectureListUiState(
