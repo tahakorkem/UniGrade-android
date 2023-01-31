@@ -2,13 +2,10 @@ package com.tahakorkem.unigrade.ui.screen.lecture.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tahakorkem.unigrade.data.Lecture
-import com.tahakorkem.unigrade.data.Term
 import com.tahakorkem.unigrade.data.Total
 import com.tahakorkem.unigrade.data.source.LectureRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,8 +14,8 @@ class LectureListViewModel @Inject constructor(
 ) : ViewModel() {
 
     val uiState = lectureRepository.observeAll()
-        .map { LectureListUiState(total = it, loading = false) }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, LectureListUiState(loading = true))
+        .map { LectureListUiState(total = it, isLoading = false) }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, LectureListUiState(isLoading = true))
 
 
 //    fun insert(lecture: Lecture, term: Term) = viewModelScope.launch {
@@ -28,7 +25,7 @@ class LectureListViewModel @Inject constructor(
 
     data class LectureListUiState(
         val total: Total? = null,
-        val loading: Boolean = false,
+        val isLoading: Boolean = false,
     )
 
 }

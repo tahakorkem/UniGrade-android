@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +35,7 @@ import com.tahakorkem.unigrade.R
 import com.tahakorkem.unigrade.data.Grade
 import com.tahakorkem.unigrade.data.Lecture
 import com.tahakorkem.unigrade.data.Term
+import com.tahakorkem.unigrade.ui.components.Centered
 import com.tahakorkem.unigrade.ui.theme.UniGradeTheme
 import com.tahakorkem.unigrade.util.toPrettyString
 
@@ -55,7 +57,7 @@ fun LectureListScreen(
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 cutoutShape = fabShape,
             ) {
-                if (!uiState.loading) {
+                if (!uiState.isLoading) {
                     Text(
                         text = buildAnnotatedString {
                             pushStyle(style = SpanStyle(fontWeight = FontWeight.Medium))
@@ -92,7 +94,7 @@ fun LectureListScreen(
         floatingActionButtonPosition = FabPosition.Center,
     ) {
         when {
-            uiState.loading -> Loading()
+            uiState.isLoading -> Loading()
             else -> LectureList(
                 terms = uiState.total!!.terms,
                 onLectureClick = navigateToDetail,
@@ -103,10 +105,7 @@ fun LectureListScreen(
 
 @Composable
 fun Loading() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
+    Centered {
         CircularProgressIndicator()
     }
 }
@@ -117,9 +116,7 @@ private fun LectureListScreenPreview() {
     UniGradeTheme {
         LectureList(
             terms = FakeItems.terms,
-            onLectureClick = { lecture ->
-
-            },
+            onLectureClick = { },
         )
     }
 }
@@ -139,11 +136,15 @@ private fun LectureItem(lecture: Lecture, onClick: () -> Unit, modifier: Modifie
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
                 Text(
                     text = lecture.name,
                     style = MaterialTheme.typography.body2,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = lecture.code,
@@ -152,11 +153,9 @@ private fun LectureItem(lecture: Lecture, onClick: () -> Unit, modifier: Modifie
                     fontWeight = FontWeight.Medium
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
             Spacer(modifier = Modifier.width(6.dp))
             Column(
-                modifier = Modifier
-                    .width(58.dp),
+                modifier = Modifier.width(58.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -222,9 +221,7 @@ private fun LectureList(
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(
-//            start = 16.dp,
             top = 16.dp,
-//            end = 16.dp,
             bottom = 56.dp
         )
     ) {
@@ -251,7 +248,7 @@ private fun LectureList(
                     LectureItemWithDot(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         lecture = lecture,
-                        itemPosition = mutableSetOf<ItemPosition>().apply {
+                        itemPositionSet = mutableSetOf<ItemPosition>().apply {
                             if (index == 0) add(ItemPosition.First)
                             if (index == term.lectures.lastIndex) add(ItemPosition.Last)
                         },
@@ -332,7 +329,7 @@ private enum class ItemPosition {
 @Composable
 private fun LectureItemWithDot(
     lecture: Lecture,
-    itemPosition: Set<ItemPosition>,
+    itemPositionSet: Set<ItemPosition>,
     onLectureClick: (Lecture) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -358,12 +355,12 @@ private fun LectureItemWithDot(
                 color = secondaryColor,
                 start = Offset(
                     x = canvasWidth / 2,
-                    y = if (ItemPosition.First in itemPosition) 3.dp.toPx() else 0f
+                    y = if (ItemPosition.First in itemPositionSet) 3.dp.toPx() else 0f
                 ),
                 end = Offset(x = canvasWidth / 2, y = canvasHeight / 2),
                 strokeWidth = 1.dp.toPx(),
             )
-            if (ItemPosition.Last !in itemPosition) {
+            if (ItemPosition.Last !in itemPositionSet) {
                 drawLine(
                     color = secondaryColor,
                     start = Offset(x = canvasWidth / 2, y = canvasHeight / 2),

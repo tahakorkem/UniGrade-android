@@ -14,6 +14,8 @@ import com.tahakorkem.unigrade.ui.NavDestinations.Lecture as LectureDest
 fun UniGradeApp() {
     UniGradeTheme {
         val navController = rememberNavController()
+        val navigateUp: () -> Unit = { navController.navigateUp() }
+
         NavHost(
             navController = navController,
             startDestination = LectureDest.List.ROUTE
@@ -40,9 +42,7 @@ fun UniGradeApp() {
                     navigateToEdit = { lecture ->
                         navController.navigate(LectureDest.Edit.routeWithArgs(lecture.code))
                     },
-                    navigateUp = {
-                        navController.navigateUp()
-                    }
+                    navigateUp = navigateUp
                 )
             }
             composable(
@@ -54,18 +54,14 @@ fun UniGradeApp() {
                     ?: error("No lecture code")
                 AddOrEditLectureScreen(
                     courseCode = courseCode,
-                    navigateUp = {
-                        navController.navigateUp()
-                    }
+                    navigateUp = navigateUp
                 )
             }
             composable(
                 route = LectureDest.Add.ROUTE
             ) {
                 AddOrEditLectureScreen(
-                    navigateUp = {
-                        navController.navigateUp()
-                    }
+                    navigateUp = navigateUp
                 )
             }
         }
