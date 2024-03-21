@@ -7,10 +7,13 @@ data class Total(
     val totalCredits
         get() = terms.fold(0f) { acc, term -> acc + term.totalCredits }
 
-    val totalGradePoints
-        get() = terms.fold(0f) { acc, term -> acc + term.totalGradePoints }
+    val totalCreditsHavingGrade
+        get() = terms.fold(0f) { acc, term -> acc + term.totalCreditsHavingGrade }
+
+    val totalWeightedGradePoints
+        get() = terms.fold(0f) { acc, term -> acc + term.totalWeightedGradePoints }
 
     val averageGrade
-        get() = totalGradePoints / totalCredits
+        get() = totalWeightedGradePoints / totalCreditsHavingGrade
 
 }

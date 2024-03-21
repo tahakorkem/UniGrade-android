@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">ÜniNot</string>
+    <string name="localized_text_aa">Mükemmel</string>
+    <string name="localized_text_ba">Pekiyi</string>
+    <string name="localized_text_bb">İyi</string>
+    <string name="localized_text_cb">Yeterli</string>
+    <string name="localized_text_cc">Geçer</string>
+    <string name="localized_text_dc">Koşullu Başarılı</string>
+    <string name="localized_text_dd">Başarısız</string>
+    <string name="localized_text_fd">Başarısız</string>
+    <string name="localized_text_ff">Başarısız</string>
+    <string name="localized_text_f0">Devamsız</string>
+    <string name="credits">Kredi</string>
+    <string name="pending">Beklemede</string>
+    <string name="semester_fall">%s Güz Dönemi</string>
+    <string name="semester_spring">%s Bahar Dönemi</string>
+    <string name="semester_summer">%s Yaz Dönemi</string>
+    <string name="app_bar_lecture_detail">Ders Detayı</string>
+    <string name="app_bar_edit_lecture">Dersi Düzenle</string>
+    <string name="app_bar_new_lecture">Yeni Ders</string>
 </resources>
